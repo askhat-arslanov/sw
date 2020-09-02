@@ -9,6 +9,8 @@ module.exports = {
 
   resolve: {
     alias: {
+      actions: path.resolve(__dirname, 'src/store/actions'),
+      'error-boundary': path.resolve(__dirname, 'src/components/error-boundary'),
       helpers: path.resolve(__dirname, 'src/services/helpers'),
       hoc: path.resolve(__dirname, 'src/hoc'),
     },

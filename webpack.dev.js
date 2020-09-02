@@ -19,6 +19,7 @@ module.exports = merge(common, {
     contentBase: path.join(__dirname, 'public'),
     compress: true,
     hot: true,
-    port: 3000
+    port: 3000,
+    sockPort: 3000
   }
 })

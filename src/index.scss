@@ -1,0 +1,22 @@
+*,
+*::after,
+*::before {
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100vh;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: linear-gradient(to right bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(./img/back.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: top;
+}

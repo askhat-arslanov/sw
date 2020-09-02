@@ -94,7 +94,7 @@ const Review = ({ filmIdForReview }) => {
           />
         </form>
 
-        <Button disabled={getIsButtonDisabled()} onCLick={saveReviewHandler}>
+        <Button disabled={getIsButtonDisabled()} onClick={saveReviewHandler}>
           Save
         </Button>
       </CardContent>

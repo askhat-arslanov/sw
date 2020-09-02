@@ -1,5 +1,5 @@
 export default class ApiService {
-  baseUrl = 'https://swapi.dev/api'
+  baseUrl = process.env.BASE_URL
 
   constructor(dto) {
     this.dto = dto
@@ -29,11 +29,11 @@ export default class ApiService {
   }
 
   async saveReview({ username, email, reviewText }) {
-    const time 
+    const time = new Date()
 
     new Promise(resolve => {
       setTimeout(() => {
-        resolve({ username, email, reviewText })
+        return resolve({ username, email, reviewText, time })
       }, 1000)
     })
   }

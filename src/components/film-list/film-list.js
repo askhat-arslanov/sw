@@ -53,7 +53,7 @@ const FilmList = ({ apiService, selectedFilmId, onSetSelectedFilmId }) => {
 
   return (
     <ErrorBoundary>
-      <Card style={{ backgroundColor: '#272c34' }}>
+      <Card className="block">
         <CardContent>
           <List>{isFetching ? getSkeleton() : getFilmListTemplate()}</List>
         </CardContent>

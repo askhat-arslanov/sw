@@ -1,6 +1,6 @@
 .navbar {
-  background-color: rgb(15, 15, 15) !important;
   &__title {
-    color: #fdfd05;
+    color: var(--primary-yellow);
+    font-family: 'Pathway Gothic One', sans-serif !important;
   }
 }

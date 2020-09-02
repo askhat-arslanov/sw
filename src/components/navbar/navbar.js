@@ -6,7 +6,7 @@ import './navbar.scss'
 
 const Navbar = () => {
   return (
-    <AppBar position="static" style={{ background: '#272c34' }}>
+    <AppBar position="static" className="block">
       <Toolbar>
         <Typography variant="h2" className="navbar__title">
           Star Wars

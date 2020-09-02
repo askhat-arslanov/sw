@@ -33,18 +33,22 @@ const FilmDetails = ({ apiService, selectedFilmId, onSetFilmIdForReview }) => {
 
   return (
     <ErrorBoundary>
-      <Card style={{ backgroundColor: '#272c34', color: '#eee' }}>
+      <Card className="block film-details">
         {filmDetails ? (
           <>
             <CardContent style={{ color: '#eee' }}>
               <Typography color="textSecondary" gutterBottom></Typography>
+
               <Typography variant="h5" component="h2">
+
                 {isFetching ? <Skeleton type="text" /> : filmDetails.title}
               </Typography>
+
               <Typography variant="body2" component="p" color="textSecondary">
                 {isFetching ? <Skeleton type="rect" height={160} /> : filmDetails.opening}
               </Typography>
             </CardContent>
+
             <CardActions>
               <Button
                 size="small"
@@ -57,7 +61,7 @@ const FilmDetails = ({ apiService, selectedFilmId, onSetFilmIdForReview }) => {
           </>
         ) : (
           <CardContent>
-            <Typography variant="h2" component="h2" color="textSecondary">
+            <Typography variant="h2" component="h2" className="film-details__empty-message">
               Choose episode
             </Typography>
           </CardContent>

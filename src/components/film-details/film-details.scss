@@ -1,0 +1,14 @@
+.film-details {
+  &__empty-message {
+    display: flex;
+    justify-content: center;
+
+    text-align: center !important;
+    font-family: 'Pathway Gothic One', sans-serif !important;
+    font-size: 5.5rem !important;
+    letter-spacing: 6px !important;
+    font-weight: 600 !important;
+    perspective: 400px;
+    color: var(--primary-yellow);
+  }
+}

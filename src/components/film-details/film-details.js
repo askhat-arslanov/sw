@@ -1,19 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import { Card, CardActions, CardContent, Button, Typography } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
-
 import './film-details.scss'
-import ApiServiceContext from '../api-service-context'
 
-// Здесь обычно прописываются алиасы в webpack
-// во избежание такого некрасивого пути
-import * as actions from '../../store/actions/film-actions'
+import * as actions from 'actions/film-actions'
+import ErrorBoundary from 'error-boundary'
+import { withApi } from 'hoc'
 
-const FilmDetails = ({ selectedFilmId, onSetFilmIdForReview }) => {
-  const apiService = useContext(ApiServiceContext)
-
+const FilmDetails = ({ apiService, selectedFilmId, onSetFilmIdForReview }) => {
   const [isFetching, setIsFetching] = useState(false)
   const [filmDetails, setFilmDetails] = useState(null)
 
@@ -36,32 +32,38 @@ const FilmDetails = ({ selectedFilmId, onSetFilmIdForReview }) => {
   }, [selectedFilmId])
 
   return (
-    <Card style={{ backgroundColor: '#272c34', color: '#eee' }}>
-      {filmDetails ? (
-        <>
-          <CardContent style={{ color: '#eee' }}>
-            <Typography color="textSecondary" gutterBottom></Typography>
-            <Typography variant="h5" component="h2">
-              {isFetching ? <Skeleton type="text" /> : filmDetails.title}
-            </Typography>
-            <Typography variant="body2" component="p" color="textSecondary">
-              {isFetching ? <Skeleton type="rect" height={160} /> : filmDetails.opening}
+    <ErrorBoundary>
+      <Card style={{ backgroundColor: '#272c34', color: '#eee' }}>
+        {filmDetails ? (
+          <>
+            <CardContent style={{ color: '#eee' }}>
+              <Typography color="textSecondary" gutterBottom></Typography>
+              <Typography variant="h5" component="h2">
+                {isFetching ? <Skeleton type="text" /> : filmDetails.title}
+              </Typography>
+              <Typography variant="body2" component="p" color="textSecondary">
+                {isFetching ? <Skeleton type="rect" height={160} /> : filmDetails.opening}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                size="small"
+                color="secondary"
+                onClick={() => onSetFilmIdForReview(filmDetails.id)}
+              >
+                Write review
+              </Button>
+            </CardActions>
+          </>
+        ) : (
+          <CardContent>
+            <Typography variant="h2" component="h2" color="textSecondary">
+              Choose episode
             </Typography>
           </CardContent>
-          <CardActions>
-            <Button size="small" color="secondary" onClick={() => onSetFilmIdForReview(filmDetails.id)}>
-              Write review
-            </Button>
-          </CardActions>
-        </>
-      ) : (
-        <CardContent>
-          <Typography variant="h2" component="h2" color="textSecondary">
-            Choose episode
-          </Typography>
-        </CardContent>
-      )}
-    </Card>
+        )}
+      </Card>
+    </ErrorBoundary>
   )
 }
 
@@ -69,4 +71,4 @@ const enhance = connect(({ film }) => ({ selectedFilmId: film.selectedFilmId }),
   onSetFilmIdForReview: actions.setFilmIdFormReview
 })
 
-export default enhance(FilmDetails)
+export default enhance(withApi(FilmDetails))

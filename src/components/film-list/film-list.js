@@ -1,19 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import { Card, CardContent, List, ListItem, Typography } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
-
-// Здесь обычно прописываются алиасы в webpack
-// во избежание такого некрасивого пути
-import * as actions from '../../store/actions/film-actions'
-
 import './film-list.scss'
-import ApiServiceContext from '../api-service-context'
 
-const FilmList = ({ selectedFilmId, onSetSelectedFilmId }) => {
-  const apiService = useContext(ApiServiceContext)
+import * as actions from 'actions/film-actions'
+import ErrorBoundary from 'error-boundary'
+import { withApi } from 'hoc'
 
+const FilmList = ({ apiService, selectedFilmId, onSetSelectedFilmId }) => {
   const [isFetching, setIsFetching] = useState(false)
   const [filmList, setFilmList] = useState([])
 
@@ -49,16 +45,20 @@ const FilmList = ({ selectedFilmId, onSetSelectedFilmId }) => {
         key={id}
         onClick={() => onSetSelectedFilmId(id)}
       >
-        <span>{title} <span style={{ color: '#7d7d7d' }}>{year}</span></span>
+        <span>
+          {title} <span style={{ color: '#7d7d7d' }}>{year}</span>
+        </span>
       </ListItem>
     ))
 
   return (
-    <Card style={{ backgroundColor: '#272c34' }}>
-      <CardContent>
-        <List>{isFetching ? getSkeleton() : getFilmListTemplate()}</List>
-      </CardContent>
-    </Card>
+    <ErrorBoundary>
+      <Card style={{ backgroundColor: '#272c34' }}>
+        <CardContent>
+          <List>{isFetching ? getSkeleton() : getFilmListTemplate()}</List>
+        </CardContent>
+      </Card>
+    </ErrorBoundary>
   )
 }
 
@@ -66,4 +66,4 @@ const enhance = connect(({ film }) => ({ selectedFilmId: film.selectedFilmId }),
   onSetSelectedFilmId: actions.setSelectedFilmId
 })
 
-export default enhance(FilmList)
+export default enhance(withApi(FilmList))

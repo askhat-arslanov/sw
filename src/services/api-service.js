@@ -1,3 +1,5 @@
+import { getDateNow } from 'helpers'
+
 export default class ApiService {
   baseUrl = process.env.BASE_URL
 
@@ -29,11 +31,11 @@ export default class ApiService {
   }
 
   async saveReview({ username, email, reviewText }) {
-    const time = new Date()
+    const time = getDateNow()
 
-    new Promise(resolve => {
+    return new Promise(resolve => {
       setTimeout(() => {
-        return resolve({ username, email, reviewText, time })
+        resolve({ username, email, reviewText, time })
       }, 1000)
     })
   }

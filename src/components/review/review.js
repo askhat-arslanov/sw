@@ -1,23 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import {
-  TextField,
-  Card,
-  CardContent,
-  Button,
-  Typography,
-  InputProps,
-  InputAdornment
-} from '@material-ui/core'
+import { TextField, Card, CardContent, Button, InputAdornment } from '@material-ui/core'
 import { AccountCircle, EmailRounded } from '@material-ui/icons'
-
 import './review.scss'
-import ApiServiceContext from '../api-service-context'
 
-const Review = ({ filmIdForReview }) => {
-  const apiService = useContext(ApiServiceContext)
+import ErrorBoundary from 'error-boundary'
+import { withApi } from 'hoc'
 
+const Review = ({ apiService, filmIdForReview }) => {
   const [isSaving, setIsSaving] = useState(false)
 
   const [username, setUsername] = useState('')
@@ -33,8 +24,11 @@ const Review = ({ filmIdForReview }) => {
 
     apiService
       .saveReview({ email, username, reviewText })
-      .then(() => {
-        console.log('yo')
+      .then(response => {
+        setEmail('')
+        setUsername('')
+        setReviewText('')
+        console.log(response)
       })
       .catch(err => {
         console.log(err)
@@ -45,60 +39,65 @@ const Review = ({ filmIdForReview }) => {
   }
 
   return filmIdForReview ? (
-    <Card className="review">
-      <CardContent>
-        <form className="review-form" noValidate autoComplete="off">
-          <div>
+    <ErrorBoundary>
+      <Card className="review">
+        <CardContent>
+          <form className="review-form" noValidate autoComplete="off">
+            <div>
+              <TextField
+                required
+                disabled={isSaving}
+                id="standard-basic"
+                label="Name"
+                value={username}
+                name="username"
+                onChange={e => setUsername(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  )
+                }}
+              />
+
+              <TextField
+                required
+                disabled={isSaving}
+                id="standard-basic"
+                label="Email"
+                value={email}
+                name="email"
+                onChange={e => setEmail(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailRounded />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </div>
+
             <TextField
               required
-              id="standard-basic"
+              disabled={isSaving}
+              id="outlined-multiline-static"
               label="Name"
-              value={username}
-              name="username"
-              onChange={e => setUsername(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                )
-              }}
+              value={reviewText}
+              name="review-text"
+              multiline
+              rows={4}
+              onChange={e => setReviewText(e.target.value)}
             />
+          </form>
 
-            <TextField
-              required
-              id="standard-basic"
-              label="Email"
-              value={email}
-              name="email"
-              onChange={e => setEmail(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <EmailRounded />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </div>
-
-          <TextField
-            required
-            id="outlined-multiline-static"
-            label="Name"
-            value={reviewText}
-            name="review-text"
-            multiline
-            rows={4}
-            onChange={e => setReviewText(e.target.value)}
-          />
-        </form>
-
-        <Button disabled={getIsButtonDisabled()} onClick={saveReviewHandler}>
-          Save
-        </Button>
-      </CardContent>
-    </Card>
+          <Button disabled={getIsButtonDisabled()} onClick={saveReviewHandler}>
+            Save
+          </Button>
+        </CardContent>
+      </Card>
+    </ErrorBoundary>
   ) : (
     ''
   )
@@ -106,4 +105,4 @@ const Review = ({ filmIdForReview }) => {
 
 const enhance = connect(({ film }) => ({ filmIdForReview: film.filmIdForReview }))
 
-export default enhance(Review)
+export default enhance(withApi(Review))

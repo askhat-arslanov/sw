@@ -1,3 +1,51 @@
 .review {
   grid-column: 1 / -1;
 }
+
+.confirm {
+  display: grid;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 50vw;
+  max-height: 70vh;
+  background-image: linear-gradient(to right bottom, #414c5a, #191e24);
+  padding: 1rem 2rem;
+  border-radius: 3px;
+  color: #eee;
+
+  &__title,
+  &__message {
+    margin-bottom: 1rem;
+  }
+
+  blockquote {
+    margin: 1rem;
+    font-style: italic;
+    color: #b6b6b6;
+  }
+
+  &__btn {
+    border: none;
+    border-radius: 3px;
+    font-size: 2rem;
+    padding: 0.2rem 0.5rem;
+    background-color: #4c5866;
+    color: #eee;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #30373f;
+    transition: all 0.1s ease;
+    outline: none;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 0 #30373f;
+    }
+
+    &:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #30373f;
+    }
+  }
+}

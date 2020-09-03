@@ -22,8 +22,9 @@ export function addLeadZero(num) {
 }
 
 /**
- * @param {string} email 
+ * @param {string} email
  */
 export function validateEmail(email) {
-  return true
+  const regex = /\S+@\S+\.\S+/
+  return regex.test(email)
 }

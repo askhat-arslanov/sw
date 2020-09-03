@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
-import { Card, CardContent, List, ListItem, Typography } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
-import './film-list.scss'
+import { Card, CardContent, List, ListItem } from '@material-ui/core'
 
-import * as actions from 'actions/film-actions'
+import Spinner from '../spinner'
 import ErrorBoundary from 'error-boundary'
+import * as actions from 'actions/film-actions'
 import { withApi } from 'hoc'
 
 const FilmList = ({ apiService, selectedFilmId, onSetSelectedFilmId }) => {
@@ -29,13 +28,6 @@ const FilmList = ({ apiService, selectedFilmId, onSetSelectedFilmId }) => {
       })
   }, [])
 
-  const getSkeleton = () =>
-    Array.from({ length: 6 }).map((_, idx) => (
-      <ListItem key={idx}>
-        <Skeleton key={idx} variant="text" />
-      </ListItem>
-    ))
-
   const getFilmListTemplate = () =>
     filmList.map(({ id, title, year }) => (
       <ListItem
@@ -53,9 +45,9 @@ const FilmList = ({ apiService, selectedFilmId, onSetSelectedFilmId }) => {
 
   return (
     <ErrorBoundary>
-      <Card className="block">
+      <Card className="block" style={{ display: 'flex', justifyContent: isFetching ? 'center': 'unset' }}>
         <CardContent>
-          <List>{isFetching ? getSkeleton() : getFilmListTemplate()}</List>
+          <List>{isFetching ? <Spinner /> : getFilmListTemplate()}</List>
         </CardContent>
       </Card>
     </ErrorBoundary>

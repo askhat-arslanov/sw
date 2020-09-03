@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import { Card, CardActions, CardContent, Button, Typography } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
 import './film-details.scss'
 
-import * as actions from 'actions/film-actions'
+import Spinner from '../spinner'
 import ErrorBoundary from 'error-boundary'
+import * as actions from 'actions/film-actions'
 import { withApi } from 'hoc'
 
 const FilmDetails = ({ apiService, selectedFilmId, onSetFilmIdForReview }) => {
@@ -31,38 +31,52 @@ const FilmDetails = ({ apiService, selectedFilmId, onSetFilmIdForReview }) => {
     }
   }, [selectedFilmId])
 
+  const getEmptyMessageTemplate = () => {
+    return (
+      <CardContent>
+        <Typography variant="h2" component="h2" className="film-details__empty-message">
+          Choose episode
+        </Typography>
+      </CardContent>
+    )
+  }
+
+  const getFilmDetailsTemplate = () => {
+    return (
+      <>
+        <CardContent style={{ color: '#eee' }}>
+          <Typography variant="h5" component="h2">
+            {filmDetails.title}
+          </Typography>
+
+          <Typography variant="body2" component="p">
+            {filmDetails.opening}
+          </Typography>
+        </CardContent>
+
+        <CardActions>
+          <Button
+            size="small"
+            color="primary"
+            style={{ color: 'var(--primary-yellow)' }}
+            onClick={() => onSetFilmIdForReview(filmDetails.id)}
+          >
+            Write review
+          </Button>
+        </CardActions>
+      </>
+    )
+  }
+
   return (
     <ErrorBoundary>
-      <Card className="block film-details">
-        {filmDetails ? (
-          <>
-            <CardContent style={{ color: '#eee' }}>
-              <Typography variant="h5" component="h2">
-                {isFetching ? <Skeleton type="text" /> : filmDetails.title}
-              </Typography>
-
-              <Typography variant="body2" component="p">
-                {isFetching ? <Skeleton type="rect" height={160} /> : filmDetails.opening}
-              </Typography>
-            </CardContent>
-
-            <CardActions>
-              <Button
-                size="small"
-                color="primary"
-                style={{ color: "var(--primary-yellow)" }}
-                onClick={() => onSetFilmIdForReview(filmDetails.id)}
-              >
-                Write review
-              </Button>
-            </CardActions>
-          </>
+      <Card className="block film-details" style={{ display: 'grid', justifyContent: 'center' }}>
+        {isFetching ? (
+          <Spinner />
+        ) : !filmDetails ? (
+          getEmptyMessageTemplate()
         ) : (
-          <CardContent>
-            <Typography variant="h2" component="h2" className="film-details__empty-message">
-              Choose episode
-            </Typography>
-          </CardContent>
+          getFilmDetailsTemplate()
         )}
       </Card>
     </ErrorBoundary>

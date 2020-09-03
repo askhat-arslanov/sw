@@ -52,7 +52,6 @@ const Review = ({ apiService, filmIdForReview }) => {
   }
 
   const validateEmailHandler = () => {
-    console.log(validateEmail(email))
     setEmailIsValid(validateEmail(email))
   }
 
@@ -76,11 +75,11 @@ const Review = ({ apiService, filmIdForReview }) => {
     return (
       <div className="confirm">
         <h2 className="confirm__title">Dear {username},</h2>
-        <p className="confirm__message">
+        <div className="confirm__message">
           Your review
           <blockquote>{reviewText}</blockquote>
           was successfully saved!
-        </p>
+        </div>
         <Button style={{ color: 'var(--primary-yellow)' }} onClick={closePopupHandler}>
           Cool
         </Button>

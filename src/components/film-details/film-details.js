@@ -37,14 +37,11 @@ const FilmDetails = ({ apiService, selectedFilmId, onSetFilmIdForReview }) => {
         {filmDetails ? (
           <>
             <CardContent style={{ color: '#eee' }}>
-              <Typography color="textSecondary" gutterBottom></Typography>
-
               <Typography variant="h5" component="h2">
-
                 {isFetching ? <Skeleton type="text" /> : filmDetails.title}
               </Typography>
 
-              <Typography variant="body2" component="p" color="textSecondary">
+              <Typography variant="body2" component="p">
                 {isFetching ? <Skeleton type="rect" height={160} /> : filmDetails.opening}
               </Typography>
             </CardContent>
@@ -52,7 +49,8 @@ const FilmDetails = ({ apiService, selectedFilmId, onSetFilmIdForReview }) => {
             <CardActions>
               <Button
                 size="small"
-                color="secondary"
+                color="primary"
+                style={{ color: "var(--primary-yellow)" }}
                 onClick={() => onSetFilmIdForReview(filmDetails.id)}
               >
                 Write review

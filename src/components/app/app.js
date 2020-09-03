@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
+import { connect } from 'react-redux'
 
 import ErrorBoundary from 'error-boundary'
 
 import './app.scss'
 import FilmDetails from '../film-details'
 import FilmList from '../film-list'
+import Spinner from '../spinner'
 import Navbar from '../navbar'
-import Review from '../review'
 
-const App = () => {
+const Review = lazy(() => import('../review'))
+
+const App = ({ filmIdForReview }) => {
   return (
     <ErrorBoundary>
       <Navbar />
@@ -17,10 +20,16 @@ const App = () => {
 
         <FilmDetails />
 
-        <Review />
+        {!!filmIdForReview && (
+          <Suspense fallback={<Spinner />}>
+            <Review />
+          </Suspense>
+        )}
       </div>
     </ErrorBoundary>
   )
 }
 
-export default App
+const enhance = connect(({ film }) => ({ filmIdForReview: film.filmIdForReview }))
+
+export default enhance(App)
